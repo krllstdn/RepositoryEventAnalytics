@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Repositories
+from .models import Repositories, Events
 
 
 class RepositorySerializer(serializers.ModelSerializer):
@@ -10,5 +10,5 @@ class RepositorySerializer(serializers.ModelSerializer):
 
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Repositories
-        fields = ["id", "event_type", "timestamp", "repository"]
+        model = Events
+        fields = ["id", "event_id", "event_type", "timestamp", "repository"]
