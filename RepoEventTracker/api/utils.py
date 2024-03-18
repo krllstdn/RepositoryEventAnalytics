@@ -9,7 +9,21 @@ from django.utils import timezone
 def fetch_repository_events(
     owner: str, repo: str, token: str = os.environ.get("GITHUB_TOKEN")
 ):
-    # fetch events as many as possible (as limits are small) and save them to the database
+    """
+    Fetches repository events from the GitHub API.
+
+    Args:
+        owner (str): The owner of the repository.
+        repo (str): The name of the repository.
+        token (str, optional): The GitHub API token. Defaults to the value of the "GITHUB_TOKEN" environment variable.
+
+    Returns:
+        list: A list of repository events.
+
+    Raises:
+        Exception: If there is an error fetching the events.
+
+    """
     events = []
     page = 1
     per_page = 100
@@ -18,14 +32,11 @@ def fetch_repository_events(
         "Authorization": f"token {token}",
         "Accept": "application/vnd.github+json",
     }
-    print("token:", token)
 
     while True:
         try:
             params = {"per_page": per_page, "page": page}
             response = requests.get(url, params=params, headers=headers)
-
-            print(f"Fetching events for {owner}/{repo} (page {page})...")
 
             if response.status_code == 200:
                 events_page = response.json()
@@ -49,13 +60,23 @@ def fetch_repository_events(
 
 
 def fetch_and_save_repository_events():
+    """
+    Fetches repository events for all repositories and saves them to the database.
+
+    This function retrieves all repositories from the database and fetches their events
+    using the GitHub API. It then saves the fetched events to the database if they don't
+    already exist.
+
+    Note: The function requires the 'GITHUB_TOKEN' environment variable to be set with a valid
+    GitHub personal access token.
+
+    Returns:
+        None
+    """
     repositories = Repositories.objects.all()
 
     for repository in repositories:
-
-        events = fetch_repository_events(
-            repository.owner, repository.name, token=os.environ.get("GITHUB_TOKEN")
-        )
+        events = fetch_repository_events(repository.owner, repository.name)
         print(f"Fetched {len(events)} events for {repository.owner}/{repository.name}")
 
         for event in events:
@@ -73,6 +94,15 @@ def fetch_and_save_repository_events():
 
 
 def get_statistics():
+    """
+    Retrieves statistics for each repository's unique events.
+
+    Returns:
+        dict: A dictionary containing the statistics for each repository's unique events.
+              The keys of the dictionary are in the format "{owner}/{name}" of the repository,
+              and the values are dictionaries containing the event types and their average time
+              between timestamps.
+    """
     repositories = Repositories.objects.all()
     output = {}
 
@@ -86,14 +116,13 @@ def get_statistics():
                 .distinct()
             )
             for event in unique_events:
-                # get list of all timestamps for each event
+                #  get sorted list of all timestamps for each event type
                 filtered_events = Events.objects.filter(
                     repository=repository,
                     event_type=event,
                     timestamp__gte=timezone.now() - timedelta(days=210),
                 ).order_by("timestamp")[:500]
 
-                # get list of all timestamps for each event and sort them
                 timestamps = [e.timestamp for e in filtered_events]
 
                 output[f"{repository.owner}/{repository.name}"][event] = (
@@ -106,6 +135,23 @@ def get_statistics():
 
 
 def average_time_between_timestamps(datetime_timestamps: list[datetime]):
+    """
+    Calculates the average time difference between a list of datetime timestamps.
+
+    Args:
+        datetime_timestamps (list[datetime]): A list of datetime timestamps.
+
+    Returns:
+        float: The average time difference between the timestamps in seconds, rounded to the nearest integer.
+
+    Raises:
+        None
+
+    Notes:
+        - The function requires at least two timestamps to calculate the average time difference.
+        - The average time difference is calculated by taking the difference between each pair of consecutive timestamps,
+          converting it to seconds, and then calculating the average of all the differences.
+    """
     if len(datetime_timestamps) < 2:
         return None  # Need at least two timestamps to calculate the average time between them
 
