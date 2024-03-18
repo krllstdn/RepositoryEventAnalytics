@@ -22,4 +22,9 @@ urlpatterns = [
         views.FetchAndSaveRepositoryEvents.as_view(),
         name="fetch-events",
     ),
+    path(
+        "statistics/",
+        views.GetStatistics.as_view(),
+        name="get-statistics",
+    ),
 ]
