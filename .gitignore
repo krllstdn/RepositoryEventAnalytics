@@ -5,3 +5,4 @@ RepoEventTracker/api/migrations/__pycache__/
 RepoEventTracker/db.sqlite3
 .env
 .vscode/launch.json
+.DS_Store
