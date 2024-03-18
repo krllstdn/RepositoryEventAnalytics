@@ -17,4 +17,9 @@ urlpatterns = [
         views.EventListCreate.as_view(),
         name="event-list-create",
     ),
+    path(
+        "fetch-events/",
+        views.FetchAndSaveRepositoryEvents.as_view(),
+        name="fetch-events",
+    ),
 ]
