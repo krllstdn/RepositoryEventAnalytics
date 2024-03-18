@@ -1,4 +1,4 @@
-datamole/
+venv/
 RepoEventTracker/api/__pycache__/
 RepoEventTracker/RepoEventTracker/__pycache__/
 RepoEventTracker/api/migrations/__pycache__/
