@@ -2,3 +2,4 @@ django
 djangorestframework
 django-apscheduler
 python-dotenv
+drf-yasg

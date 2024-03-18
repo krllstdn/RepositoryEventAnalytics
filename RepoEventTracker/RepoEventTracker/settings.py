@@ -45,8 +45,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "api",
     "rest_framework",
+    "drf_yasg",
 ]
-# "django-apscheduler",
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
