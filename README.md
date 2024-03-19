@@ -2,15 +2,19 @@ Create a virtual environment:
 `python -m venv venv`
 
 Activate environment:
+`source datamole/bin/activate`
+Activate environment:
 `source venv/bin/activate`
 
+Install the requirements:
 Install requirements into the environment:
 `pip install -r requirements.txt`
 
 Navigate to the RepoEventTracker directory.
+Navigate to the RepoEventTracker directory.
 
 Create `.env` file from the `.env-example` in the RepoEventTracker directory. Add your GitHub token there.
-The GH token must have the `metadata:read` permissions
+The GH token must have the `metadata:read` permissions for repositories.
 
 Run migrations.
 `python manage.py migrate`

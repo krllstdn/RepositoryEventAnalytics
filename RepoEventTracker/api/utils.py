@@ -1,9 +1,10 @@
-import requests
-
-from .models import Events, Repositories
 import os
 from datetime import datetime, timedelta
+
+import requests
 from django.utils import timezone
+
+from .models import Events, Repositories
 
 
 def fetch_repository_events(

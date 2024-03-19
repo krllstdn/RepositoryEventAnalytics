@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import Repositories, Events
+
+from .models import Events, Repositories
 
 
 class RepositorySerializer(serializers.ModelSerializer):
