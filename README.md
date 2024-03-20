@@ -2,7 +2,7 @@ Create a virtual environment:
 `python -m venv venv`
 
 Activate environment:
-`source datamole/bin/activate`
+`source venv/bin/activate`
 Activate environment:
 `source venv/bin/activate`
 
