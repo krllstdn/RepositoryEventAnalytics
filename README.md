@@ -3,14 +3,10 @@ Create a virtual environment:
 
 Activate environment:
 `source venv/bin/activate`
-Activate environment:
-`source venv/bin/activate`
 
-Install the requirements:
 Install requirements into the environment:
 `pip install -r requirements.txt`
 
-Navigate to the RepoEventTracker directory.
 Navigate to the RepoEventTracker directory.
 
 Create `.env` file from the `.env-example` in the RepoEventTracker directory. Add your GitHub token there.
